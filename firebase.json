@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "romerodev",
     "public": "dist",
     "ignore": [
       "firebase.json",
