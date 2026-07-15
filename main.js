@@ -95,19 +95,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const projectData = {
     'project-1': {
       title: 'Borda Silente',
-      desc: 'Simulador estratégico de combate marítimo por turnos con lógica probabilística e interfaz inmersiva basada en coordenadas.',
+      desc: 'Plataforma integral de reservas y gestión operativa para un refugio boutique en el Valle de Ansó, Pirineos. Cuenta con vistas de huéspedes con calculadora de tarifas e informes PDF, mostrador de recepción con chat y control de habitaciones, y supervisión ejecutiva con simulación de CCTV en vivo.',
       link: 'https://bordasim.web.app/',
       github: 'https://github.com/romero-ivan/Borda-Silente'
     },
     'project-2': {
       title: 'Smoking Sim',
-      desc: 'Simulador interactivo web con renderizado dinámico, físicas fluidas de partículas en Canvas y localización de idiomas completa.',
+      desc: 'Simulador interactivo de relajación en 3D (Three.js) ambientado en un pub subterráneo de estética retro-futurista. Incluye físicas de partículas de humo en Canvas, jazz de piano procedural interactivo y una simulación psicodélica en un faro.',
       link: 'https://fablesclub.web.app/',
       github: 'https://github.com/romero-ivan/smoking-sim'
     },
     'project-3': {
       title: 'Aero Desktop',
-      desc: 'Entorno de escritorio virtual interactivo estilo Frutiger Aero. Ventanas arrastrables, widgets persistentes sincronizados vía Firestore y optimización de rendimiento Lighthouse 95+.',
+      desc: 'Entorno de escritorio virtual interactivo inspirado en la estética clásica Frutiger Aero. Cuenta con ventanas flotantes con Pointer Events, aplicaciones integradas (Diario, Finanzas, Médico con PDF y Calendario de eventos) y sincronización con Firestore en tiempo real.',
       link: 'https://escritorio-aero.web.app/',
       github: 'https://github.com/romero-ivan/escritorio-aero'
     }
