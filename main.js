@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     'project-2': {
       title: 'Smoking Sim',
-      desc: 'Simulador interactivo de relajación en 3D (Three.js) ambientado en un pub subterráneo de estética retro-futurista. Incluye físicas de partículas de humo en Canvas, jazz de piano procedural interactivo y una simulación psicodélica en un faro.',
+      desc: 'Simulador interactivo de relajación en 3D (Three.js) ambientado en un pub subterráneo de estética retro-futurista. Incluye físicas de partículas de humo en Canvas y jazz de piano procedural interactivo.',
       link: 'https://fablesclub.web.app/',
       github: 'https://github.com/romero-ivan/smoking-sim'
     },
