@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!cvOverlay.classList.contains('open')) {
         cvOverlay.style.display = 'none';
       }
-    }, 400);
+    }, 300);
     document.body.style.overflow = '';
   }
 
@@ -267,9 +267,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = projectData[projId];
 
       if (data && projectReader) {
-        projectReader.classList.remove('open');
-        
-        setTimeout(() => {
+        // If it is NOT open yet, open it with standard animation
+        if (!projectReader.classList.contains('open')) {
+          projectReader.style.display = 'block';
+          projectReader.offsetHeight; // Force reflow
           readerTitle.innerText = data.title;
           readerDesc.innerText = data.desc;
           if (readerLink) readerLink.setAttribute('href', data.link);
@@ -279,7 +280,27 @@ document.addEventListener('DOMContentLoaded', () => {
           setTimeout(() => {
             projectReader.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           }, 100);
-        }, 200);
+        } else {
+          // If it IS already open, crossfade the content smoothly inside the card
+          const readerContent = projectReader.querySelector('.reader-content');
+          if (readerContent) {
+            readerContent.classList.add('fade-out');
+            
+            setTimeout(() => {
+              readerTitle.innerText = data.title;
+              readerDesc.innerText = data.desc;
+              if (readerLink) readerLink.setAttribute('href', data.link);
+              if (readerGithub) readerGithub.setAttribute('href', data.github);
+              readerContent.classList.remove('fade-out');
+            }, 250);
+          } else {
+            // Fallback
+            readerTitle.innerText = data.title;
+            readerDesc.innerText = data.desc;
+            if (readerLink) readerLink.setAttribute('href', data.link);
+            if (readerGithub) readerGithub.setAttribute('href', data.github);
+          }
+        }
       }
     });
   });
@@ -416,4 +437,20 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // =============================================
+  // SMOOTH SCROLL FOR ANCHORS WITHOUT HASH CHANGE
+  // =============================================
+  const anchorLinks = document.querySelectorAll('a[href^="#"]:not(.cv-open-trigger)');
+  anchorLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const targetId = link.getAttribute('href');
+      if (targetId === '#') return;
+      const targetEl = document.querySelector(targetId);
+      if (targetEl) {
+        e.preventDefault();
+        targetEl.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
 });

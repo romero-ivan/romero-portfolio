@@ -46,12 +46,14 @@ body {
 /* Background Aurora Layer (Split into GPU-accelerated static layers for buttery smooth mobile rendering) */
 .aurora-bg {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  top: -150px;
+  left: -150px;
+  right: -150px;
+  bottom: -150px;
   z-index: -2;
+  -webkit-filter: blur(80px);
   filter: blur(80px);
+  -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0); /* Promote to GPU composite layer */
   will-change: opacity;
   opacity: 0;
@@ -293,9 +295,11 @@ body {
   font-size: 4rem;
   line-height: 1.15;
   margin-bottom: 2rem;
-  background: linear-gradient(135deg, #fff 40%, var(--color-aero-cyan));
+  background-image: linear-gradient(135deg, #fff 40%, var(--color-aero-cyan));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent;
   font-weight: 600;
 }
 
@@ -610,15 +614,26 @@ body {
   color: #fff;
 }
 
+.reader-content {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reader-content.fade-out {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
 .reader-content h3 {
   font-size: 1.8rem;
   font-weight: 600;
-  color: #fff;
   margin-bottom: 0.9rem;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-  background: linear-gradient(135deg, #ffffff 60%, var(--color-aero-cyan));
-  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(135deg, #ffffff 60%, var(--color-aero-cyan));
   -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .reader-content p {
@@ -1065,6 +1080,20 @@ footer {
 /* Responsive */
 @media (max-width: 768px) {
   .water-lens { display: none !important; }
+  .water-distort-container { will-change: auto !important; }
+  .aurora-bg {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: auto !important;
+    width: 100% !important;
+    height: 120vh !important;
+    animation: none !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+    will-change: auto !important;
+  }
   .hero {
     flex-direction: column;
     justify-content: center;
@@ -1561,17 +1590,17 @@ footer {
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
   display: none;
+  flex-direction: column;
+  align-items: center;
   overflow-y: auto;
   padding: 2rem 1rem;
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.3s ease;
 }
 
 #cv-overlay.open {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   opacity: 1;
+  transition: opacity 0.4s ease;
 }
 
 .cv-toolbar {
@@ -1581,6 +1610,15 @@ footer {
   justify-content: space-between;
   margin-bottom: 2rem;
   gap: 1rem;
+  transform: translateY(-20px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+#cv-overlay.open .cv-toolbar {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
 }
 
 .cv-btn {
@@ -1632,6 +1670,15 @@ footer {
   box-shadow: var(--glass-shadow);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  transform: translateY(30px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+#cv-overlay.open .cv-card {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
 }
 
 .cv-grid {
@@ -1899,6 +1946,9 @@ footer {
     border-radius: 0 !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 
   @page {
