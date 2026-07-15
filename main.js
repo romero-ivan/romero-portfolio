@@ -130,6 +130,11 @@ document.addEventListener('DOMContentLoaded', () => {
           if (readerLink) readerLink.setAttribute('href', data.link);
           if (readerGithub) readerGithub.setAttribute('href', data.github);
           projectReader.classList.add('open');
+          
+          // Smooth scroll to the reader display so it's visible on mobile
+          setTimeout(() => {
+            projectReader.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }, 100);
         }, 200);
       }
     });

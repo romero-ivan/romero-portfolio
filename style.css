@@ -1443,27 +1443,50 @@ footer {
     left: 1.5rem;
   }
   .shelf-container {
-    padding: 2rem 0 !important;
+    padding: 5rem 0 2rem 0 !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none; /* Hide scrollbar on Firefox */
+    display: flex;
+    justify-content: flex-start !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
+  .shelf-container::-webkit-scrollbar {
+    display: none; /* Hide scrollbar on Chrome/Safari */
   }
   .glass-shelf {
-    flex-wrap: wrap !important;
-    height: auto !important;
-    gap: 15px 10px !important;
-    padding: 20px 10px !important;
-    transform: none !important; /* Remove 3D skew for better touch usability */
-    background: rgba(255, 255, 255, 0.05) !important;
-    border-radius: 12px !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+    width: 820px !important; /* Fixed width to make shelf scrollable */
+    max-width: none !important;
+    flex-shrink: 0 !important;
+    transform: rotateX(20deg) !important; /* Keep 3D depth on mobile */
+    height: 20px !important;
+    padding: 0 !important;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.05) 50%, rgba(0, 242, 254, 0.1) 80%, rgba(0,0,0,0.6) 100%) !important;
+    border-radius: 0 !important;
+    box-shadow: 
+      0 20px 40px rgba(0,0,0,0.7),
+      inset 0 1px 0 rgba(255,255,255,0.5) !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    align-items: center !important;
   }
   .minidisc-case {
-    transform: none !important; /* Disable hover rotation and translation on mobile */
-    margin: 5px 0 !important;
+    transform: translateY(-85px) rotateY(-10deg) rotateX(6deg) scale(0.9) !important; /* Retain 3D depth and scale down to fit */
+    margin: 0 !important;
   }
-  .minidisc-case:hover {
-    transform: none !important;
+  .minidisc-case:hover,
+  .minidisc-case:active {
+    transform: translateY(-105px) rotateY(0deg) rotateX(0deg) scale(1.02) !important; /* Pop out animation on tap */
   }
-  .minidisc-case:hover .minidisc {
-    transform: none !important;
+  .minidisc-case:hover .minidisc,
+  .minidisc-case:active .minidisc {
+    transform: translateY(-50%) rotate(40deg) !important; /* Slide out disc on mobile tap */
+  }
+  .case-sleeve {
+    backdrop-filter: none !important; /* Remove backdrop-filter to prevent browser rendering blurriness in 3D transforms */
+    -webkit-backdrop-filter: none !important;
+    background: rgba(15, 23, 42, 0.95) !important; /* Solid dark background for sharpness */
   }
 }
 
