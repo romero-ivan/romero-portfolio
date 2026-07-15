@@ -73,11 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // SCROLL COLOR INTERPOLATION (Submarine theme)
   // =============================================
   const colorStops = [
-    { pos: 0.0,  bg: [3, 7, 18] },
-    { pos: 0.25, bg: [4, 21, 48] },
-    { pos: 0.5,  bg: [2, 26, 18] },
-    { pos: 0.75, bg: [3, 14, 30] },
-    { pos: 1.0,  bg: [2, 12, 27] },
+    { pos: 0.0,  bg: [4, 8, 22] },
+    { pos: 0.25, bg: [8, 26, 58] },
+    { pos: 0.5,  bg: [4, 36, 24] },
+    { pos: 0.75, bg: [6, 18, 38] },
+    { pos: 1.0,  bg: [3, 11, 24] },
   ];
 
   function lerpColor(a, b, t) {
