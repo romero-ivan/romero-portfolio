@@ -365,7 +365,8 @@
         padding: 0 !important;
         margin: 0 !important;
         max-width: 100% !important;
-        grid-template-columns: 170px 1fr !important;
+        display: flex !important;
+        flex-direction: row !important;
         gap: 1.2rem !important;
         border-radius: 0 !important;
         backdrop-filter: none !important;
@@ -378,6 +379,9 @@
         border-right: 1px solid #e5e7eb !important;
         padding-right: 1rem !important;
         gap: 0.8rem !important;
+        width: 180px !important;
+        flex-shrink: 0 !important;
+        display: block !important;
       }
 
       .cv-photo-container {
@@ -459,6 +463,8 @@
 
       .cv-main {
         gap: 0.9rem !important;
+        flex-grow: 1 !important;
+        display: block !important;
       }
 
       .header-info h1 {
