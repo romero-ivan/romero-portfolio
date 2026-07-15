@@ -982,6 +982,7 @@ footer {
 
 /* Responsive */
 @media (max-width: 768px) {
+  .water-lens { display: none !important; }
   .hero {
     flex-direction: column;
     justify-content: center;
