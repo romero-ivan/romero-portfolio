@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const readerTitle = document.getElementById('reader-title');
   const readerDesc = document.getElementById('reader-desc');
   const readerLink = document.getElementById('reader-link');
+  const readerGithub = document.getElementById('reader-github');
   const closeReader = document.querySelector('.close-reader');
 
   // SVG Water Ripple elements
@@ -93,19 +94,22 @@ document.addEventListener('DOMContentLoaded', () => {
   // Project data for the MiniDiscs reader
   const projectData = {
     'project-1': {
-      title: 'Enjambre IA // AI SWARM',
-      desc: 'Red descentralizada de microagentes autónomos operando en tiempo real. Orquestación automática utilizando Claude y Gemini para realizar tareas complejas en paralelo con resolución de conflictos automatizada.',
-      link: '#'
+      title: 'Borda Silente',
+      desc: 'Simulador estratégico de combate marítimo por turnos con lógica probabilística e interfaz inmersiva basada en coordenadas.',
+      link: 'https://bordasim.web.app/',
+      github: 'https://github.com/romero-ivan/Borda-Silente'
     },
     'project-2': {
-      title: 'Neural API // GATEWAY',
-      desc: 'Gateway de inferencia ultrarrápida para LLMs con balanceo dinámico de carga, optimización de caché semántica y traducción instantánea de tokens a nivel de red para minimizar la latencia de respuesta.',
-      link: '#'
+      title: 'Smoking Sim',
+      desc: 'Simulador interactivo web con renderizado dinámico, físicas fluidas de partículas en Canvas y localización de idiomas completa.',
+      link: 'https://fablesclub.web.app/',
+      github: 'https://github.com/romero-ivan/smoking-sim'
     },
     'project-3': {
-      title: 'ACE Runner // ENGINE',
-      desc: 'Motor de ejecución seguro para entornos de código agente (ACE). Ejecución aislada de código generado, autodepuración de fallos en bucle cerrado y sandbox de pruebas con control de dependencias.',
-      link: '#'
+      title: 'Aero Desktop',
+      desc: 'Entorno de escritorio virtual interactivo estilo Frutiger Aero. Ventanas arrastrables, widgets persistentes sincronizados vía Firestore y optimización de rendimiento Lighthouse 95+.',
+      link: 'https://escritorio-aero.web.app/',
+      github: 'https://github.com/romero-ivan/escritorio-aero'
     }
   };
 
@@ -113,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
   minidiscs.forEach(disc => {
     disc.addEventListener('click', () => {
       const projId = disc.getAttribute('data-project');
+      if (!projId) return; // Ignore disabled projects in progress
       const data = projectData[projId];
 
       if (data && projectReader) {
@@ -122,7 +127,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
           readerTitle.innerText = data.title;
           readerDesc.innerText = data.desc;
-          readerLink.setAttribute('href', data.link);
+          if (readerLink) readerLink.setAttribute('href', data.link);
+          if (readerGithub) readerGithub.setAttribute('href', data.github);
           projectReader.classList.add('open');
         }, 200);
       }

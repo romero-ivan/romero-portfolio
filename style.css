@@ -1411,5 +1411,28 @@ footer {
     bottom: 1.5rem;
     left: 1.5rem;
   }
+  .shelf-container {
+    padding: 2rem 0 !important;
+  }
+  .glass-shelf {
+    flex-wrap: wrap !important;
+    height: auto !important;
+    gap: 15px 10px !important;
+    padding: 20px 10px !important;
+    transform: none !important; /* Remove 3D skew for better touch usability */
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+  }
+  .minidisc-case {
+    transform: none !important; /* Disable hover rotation and translation on mobile */
+    margin: 5px 0 !important;
+  }
+  .minidisc-case:hover {
+    transform: none !important;
+  }
+  .minidisc-case:hover .minidisc {
+    transform: none !important;
+  }
 }
 
