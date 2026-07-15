@@ -1443,50 +1443,58 @@ footer {
     left: 1.5rem;
   }
   .shelf-container {
-    padding: 5rem 0 2rem 0 !important;
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    scrollbar-width: none; /* Hide scrollbar on Firefox */
-    display: flex;
-    justify-content: flex-start !important;
-    padding-left: 2rem !important;
-    padding-right: 2rem !important;
+    padding: 3rem 0 !important;
+    overflow-x: visible !important;
+    display: flex !important;
+    justify-content: center !important;
   }
-  .shelf-container::-webkit-scrollbar {
-    display: none; /* Hide scrollbar on Chrome/Safari */
+  #projects > div > .shelf-container {
+    padding-top: 3rem !important; /* Override desktop inline padding-top */
+    padding-bottom: 2rem !important;
+    margin-top: 0 !important;
   }
   .glass-shelf {
-    width: 820px !important; /* Fixed width to make shelf scrollable */
-    max-width: none !important;
+    width: 90% !important;
+    max-width: 240px !important; /* Vertical rack style width */
+    height: auto !important;
     flex-shrink: 0 !important;
-    transform: rotateX(20deg) !important; /* Keep 3D depth on mobile */
-    height: 20px !important;
-    padding: 0 !important;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.05) 50%, rgba(0, 242, 254, 0.1) 80%, rgba(0,0,0,0.6) 100%) !important;
-    border-radius: 0 !important;
-    box-shadow: 
-      0 20px 40px rgba(0,0,0,0.7),
-      inset 0 1px 0 rgba(255,255,255,0.5) !important;
-    display: flex !important;
-    justify-content: space-around !important;
-    align-items: center !important;
+    transform: rotateX(15deg) rotateY(-10deg) !important; /* Keep vertical 3D depth on mobile */
+    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%) !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6) !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important; /* Single column rack */
+    justify-items: center !important;
+    align-content: center !important;
+    gap: 75px 10px !important; /* Gap to allow active disc popout */
+    padding: 40px 10px !important;
   }
+  
+  /* Target the in-development shelf to render as a 2-column grid on mobile */
+  #projects > div > .shelf-container > .glass-shelf {
+    grid-template-columns: repeat(2, 1fr) !important;
+    max-width: 350px !important; /* Wider for 2 columns */
+    gap: 75px 15px !important;
+    padding: 40px 15px !important;
+  }
+  
   .minidisc-case {
-    transform: translateY(-85px) rotateY(-10deg) rotateX(6deg) scale(0.9) !important; /* Retain 3D depth and scale down to fit */
+    transform: translateY(0) rotateY(-12deg) rotateX(8deg) scale(0.95) !important; /* Vertical flow baseline */
     margin: 0 !important;
   }
   .minidisc-case:hover,
   .minidisc-case:active {
-    transform: translateY(-105px) rotateY(0deg) rotateX(0deg) scale(1.02) !important; /* Pop out animation on tap */
+    transform: translateY(-15px) rotateY(0deg) rotateX(0deg) scale(1.02) !important; /* Soft pop-up lift on tap */
   }
   .minidisc-case:hover .minidisc,
   .minidisc-case:active .minidisc {
-    transform: translateY(-50%) rotate(40deg) !important; /* Slide out disc on mobile tap */
+    transform: translateY(-55%) rotate(40deg) !important; /* Slide out disc on tap */
   }
   .case-sleeve {
-    backdrop-filter: none !important; /* Remove backdrop-filter to prevent browser rendering blurriness in 3D transforms */
+    backdrop-filter: none !important; /* Fix blurriness on mobile browsers */
     -webkit-backdrop-filter: none !important;
-    background: rgba(15, 23, 42, 0.95) !important; /* Solid dark background for sharpness */
+    background: rgba(15, 23, 42, 0.95) !important;
   }
 }
 
