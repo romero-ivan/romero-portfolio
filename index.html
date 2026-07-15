@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Romero - Experto en LLMs y Entornos de Código Agente (ACE)." />
+    <title>Romero | Experto en IA & Sistemas Agentes</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <!-- SVG Water Distortion Filter (used by the floating lens) -->
+    <svg style="position: absolute; width: 0; height: 0;" width="0" height="0" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="water-filter">
+          <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" result="displacement" />
+        </filter>
+      </defs>
+    </svg>
+
+    <!-- Floating Water Lens (Follows the mouse cursor) -->
+    <div class="water-lens"></div>
+
+    <!-- Liquid Background Layer -->
+    <div class="aurora-bg"></div>
+
+    <!-- Japanese Asymmetric Frames (Tategaki-inspired) -->
+    <div class="vertical-text-frame vertical-left">AI STACK // LLM ECOSYSTEM</div>
+    <div class="vertical-text-frame vertical-right">ROMERO // AGENTIC SYSTEMS</div>
+
+    <!-- Navigation -->
+    <nav class="glass-nav">
+      <div class="nav-brand">ROMERO.</div>
+      <ul class="nav-links">
+        <li><a href="#about">Sobre mí</a></li>
+        <li><a href="#projects">Estantería</a></li>
+        <li><a href="#productivity">Reactor</a></li>
+      </ul>
+      <a href="#contact" class="glass-button nav-btn">Contactar</a>
+    </nav>
+
+    <!-- Ambient Floating Tech Stream (Replacing the cheap marquee) -->
+    <div class="ambient-stream left-stream">
+      <div class="bubble-tech"><span>GPT 5.6</span></div>
+      <div class="bubble-tech"><span>Fable</span></div>
+      <div class="bubble-tech"><span>Gemini 3.5</span></div>
+      <div class="bubble-tech"><span>Grok 4.5</span></div>
+      <div class="bubble-tech"><span>Sakana Fugu</span></div>
+    </div>
+    
+    <div class="ambient-stream right-stream">
+      <div class="bubble-tech"><span>Antigravity 2</span></div>
+      <div class="bubble-tech"><span>Claude Code</span></div>
+      <div class="bubble-tech"><span>Codex</span></div>
+      <div class="bubble-tech"><span>Cursor</span></div>
+      <div class="bubble-tech"><span>Devin</span></div>
+    </div>
+
+    <!-- Content distorted by SVG Water Filter -->
+    <div class="water-distort-container">
+      
+      <!-- Hero Section -->
+      <section id="about" class="hero">
+        <div class="hero-content">
+          <p class="subtitle">INTEGRIDAD Y SISTEMAS</p>
+          <h1 class="title">Código que<br>fluye libre.</h1>
+          <p class="description">
+            Soy Romero. Diseñador de sistemas autónomos y experto en orquestación de LLMs. Construyo software líquido que se adapta dinámicamente utilizando entornos de desarrollo autónomos.
+          </p>
+          <a href="#projects" class="glass-button primary">Explorar Estantería</a>
+        </div>
+        
+        <div class="hero-visual">
+          <div class="droplet-container">
+            <div class="glass-droplet">
+              <div class="inner-fluid"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects Area (Skeuomorphic Shelf) -->
+      <section id="projects" class="projects-section">
+        <div class="section-header">
+          <span class="jp-sub">PROYECTOS</span>
+          <h2 class="section-title">Estantería de Cristal</h2>
+          <p class="section-desc">Selecciona un MiniDisc para cargar el proyecto en el lector de cristal.</p>
+        </div>
+
+        <div class="shelf-container">
+          <div class="glass-shelf">
+            <!-- MiniDisc Case 1 -->
+            <div class="minidisc-case" data-project="project-1">
+              <div class="minidisc color-cyan">
+                <div class="disc-label">ENJAMBRE IA</div>
+                <div class="disc-hub"></div>
+              </div>
+              <div class="case-sleeve">01 // SWARM</div>
+            </div>
+            
+            <!-- MiniDisc Case 2 -->
+            <div class="minidisc-case" data-project="project-2">
+              <div class="minidisc color-green">
+                <div class="disc-label">NEURAL API</div>
+                <div class="disc-hub"></div>
+              </div>
+              <div class="case-sleeve">02 // GATEWAY</div>
+            </div>
+
+            <!-- MiniDisc Case 3 -->
+            <div class="minidisc-case" data-project="project-3">
+              <div class="minidisc color-pink">
+                <div class="disc-label">ACE RUNNER</div>
+                <div class="disc-hub"></div>
+              </div>
+              <div class="case-sleeve">03 // ENGINE</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Glass Reader Display (Slides down when a project is selected) -->
+        <div class="glass-reader-display" id="project-reader">
+          <div class="reader-header">
+            <div class="reader-status"><span class="pulse-led"></span> CARGANDO ARCHIVO...</div>
+            <button class="close-reader">&times;</button>
+          </div>
+          <div class="reader-content">
+            <h3 id="reader-title">Selecciona un proyecto...</h3>
+            <p id="reader-desc">El contenido del MiniDisc seleccionado se proyectará aquí de manera holográfica.</p>
+            <div class="reader-links">
+              <a href="#" class="glass-button compact-btn" id="reader-link">Ver Demo &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Productivity Section (Fluid Hydro-Reactor) -->
+      <section id="productivity" class="productivity-section">
+        <div class="section-header">
+          <span class="jp-sub">RENDIMIENTO</span>
+          <h2 class="section-title">Reactor de Rendimiento</h2>
+          <p class="section-desc">Comparativa del flujo de desarrollo asistido con agentes e inferencia paralela.</p>
+        </div>
+
+        <div class="reactor-dashboard">
+          <!-- Standard Developer (Skeuomorphic Glass Hourglass) -->
+          <div class="glass-card reactor-chamber chamber-slow">
+            <h3>Desarrollador Estándar</h3>
+            <div class="hourglass-structure">
+              <div class="glass-hourglass">
+                <div class="hourglass-bulb top">
+                  <div class="hourglass-sand sand-top"></div>
+                </div>
+                <div class="hourglass-neck">
+                  <div class="sand-drip"></div>
+                </div>
+                <div class="hourglass-bulb bottom">
+                  <div class="hourglass-sand sand-bottom"></div>
+                </div>
+                <!-- Glare overlays on the hourglass -->
+                <div class="hourglass-glare"></div>
+              </div>
+            </div>
+            <div class="gauge-area">
+              <span class="multiplier">1x</span>
+              <span class="gauge-label">Flujo manual secuencial</span>
+            </div>
+          </div>
+
+          <!-- Romero (Bioluminescent Cylinder with 3D waves) -->
+          <div class="glass-card reactor-chamber chamber-fast">
+            <h3>Romero + ACE & LLMs</h3>
+            <div class="glass-cylinder">
+              <!-- Animated liquid with 3D wave mechanics inside -->
+              <div class="liquid-glow">
+                <div class="liquid-wave w1"></div>
+                <div class="liquid-wave w2"></div>
+              </div>
+              <!-- Bubbles will rise via CSS animation -->
+              <div class="bubble-chamber">
+                <div class="bub b1"></div>
+                <div class="bub b2"></div>
+                <div class="bub b3"></div>
+                <div class="bub b4"></div>
+                <div class="bub b5"></div>
+                <div class="bub b6"></div>
+              </div>
+            </div>
+            <div class="gauge-area">
+              <span class="multiplier glow-text">100x</span>
+              <span class="gauge-label">Flujo autónomo líquido</span>
+            </div>
+          </div>
+        </div>
+      <!-- Scenario Explorer Section (Liquid Brancher) -->
+      <section id="thinking" class="thinking-section">
+        <div class="section-header">
+          <span class="jp-sub">PENSAMIENTO SISTÉMICO</span>
+          <h2 class="section-title">Análisis de Posibilidades</h2>
+          <p class="section-desc">No soy un simple "picateclas". Analizo los requerimientos desde múltiples ángulos para garantizar que el producto final sea sólido y eficiente.</p>
+        </div>
+
+        <div class="brancher-visualizer">
+          <!-- Graphic Area with morphing organic blob -->
+          <div class="brancher-graphic">
+            <svg class="brancher-svg" viewBox="0 0 400 400">
+              <line id="path-efficiency" x1="200" y1="200" x2="200" y2="60" class="branch-connector" />
+              <line id="path-failures" x1="200" y1="200" x2="340" y2="200" class="branch-connector" />
+              <line id="path-features" x1="200" y1="200" x2="200" y2="340" class="branch-connector" />
+              <line id="path-scalability" x1="200" y1="200" x2="60" y2="200" class="branch-connector" />
+            </svg>
+
+            <!-- Central Organic Blob -->
+            <div class="blob-core">
+              <div class="blob-liquid"></div>
+              <div class="blob-core-text">Requerimiento</div>
+            </div>
+
+            <!-- Satelite Droplets -->
+            <div class="droplet-node node-top" data-branch="efficiency">
+              <div class="droplet-hover-target"></div>
+              <div class="droplet-visual">
+                <span>Rendimiento</span>
+              </div>
+            </div>
+
+            <div class="droplet-node node-right" data-branch="failures">
+              <div class="droplet-hover-target"></div>
+              <div class="droplet-visual">
+                <span>Errores</span>
+              </div>
+            </div>
+
+            <div class="droplet-node node-bottom" data-branch="features">
+              <div class="droplet-hover-target"></div>
+              <div class="droplet-visual">
+                <span>Negocio</span>
+              </div>
+            </div>
+
+            <div class="droplet-node node-left" data-branch="scalability">
+              <div class="droplet-hover-target"></div>
+              <div class="droplet-visual">
+                <span>Futuro</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Simple, non-pedantic description cards -->
+          <div class="brancher-text-panel">
+            <h3 id="brancher-title">Explorador de Escenarios</h3>
+            <p id="brancher-subtitle">Pasa el ratón por los nodos de la izquierda para ver cómo enfoco las soluciones.</p>
+            
+            <div class="brancher-grid" id="brancher-grid" style="display: none;">
+              <div class="brancher-card card-standard">
+                <span class="card-title">Desarrollador Común</span>
+                <p id="txt-standard">-</p>
+              </div>
+              <div class="brancher-card card-romero">
+                <span class="card-title glow-cyan">Mi Enfoque</span>
+                <p id="txt-romero">-</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="contact-section">
+        <div class="glass-panel">
+          <h2>Establecer Conexión.</h2>
+          <p>Disponible para colaboraciones avanzadas en arquitecturas inteligentes.</p>
+          <div class="contact-info">
+            <p class="email-text">pirebat@gmail.com</p>
+            <div class="whatsapp-fluid-orb-container">
+              <a href="https://wa.me/34655279868" target="_blank" class="whatsapp-fluid-orb">
+                <div class="orb-water-bg"></div>
+                <div class="orb-content">
+                  <svg class="wa-icon-minimal" viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.454 5.709 1.455h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+                  </svg>
+                  <span class="orb-text">Chat // +34 655 27 98 68</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <footer>
+      <p>&copy; 2026 Romero. Hecho con precisión y flujo dinámico.</p>
+    </footer>
+
+    <!-- Floating Version Badge -->
+    <div class="version-badge-container">
+      <button class="version-badge" id="version-badge-btn">
+        <span class="pulse-led green"></span>
+        <span class="version-text">v1.0.4</span>
+        <span class="sync-text" style="display: none;">— Sincronizado con GitHub</span>
+      </button>
+    </div>
+
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
