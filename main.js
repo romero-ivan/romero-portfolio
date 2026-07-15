@@ -24,8 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const cvCloseBtn = document.getElementById('cv-close-btn');
   const cvOpenTriggers = document.querySelectorAll('.cv-open-trigger');
 
-  // Aurora background element for scroll color
-  const auroraBg = document.querySelector('.aurora-bg');
+  // Aurora background elements for scroll color (cross-fading static layers for performance)
+  const auroraZone1 = document.querySelector('.aurora-bg.zone-1');
+  const auroraZone2 = document.querySelector('.aurora-bg.zone-2');
+  const auroraZone3 = document.querySelector('.aurora-bg.zone-3');
 
   // =============================================
   // CV OVERLAY SPA LOGIC
@@ -71,11 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // SCROLL COLOR INTERPOLATION (Submarine theme)
   // =============================================
   const colorStops = [
-    { pos: 0.0,  bg: [3, 7, 18],     aurora: [[0,242,254,0.08], [59,130,246,0.06], [16,185,129,0.04]] },
-    { pos: 0.25, bg: [4, 21, 48],     aurora: [[0,210,230,0.10], [40,100,200,0.08], [10,150,120,0.05]] },
-    { pos: 0.5,  bg: [2, 26, 18],     aurora: [[0,200,180,0.12], [20,180,140,0.08], [0,255,200,0.06]] },
-    { pos: 0.75, bg: [3, 14, 30],     aurora: [[0,180,220,0.08], [30,80,180,0.06], [10,120,100,0.04]] },
-    { pos: 1.0,  bg: [2, 12, 27],     aurora: [[0,150,200,0.05], [20,60,140,0.04], [5,80,70,0.03]] },
+    { pos: 0.0,  bg: [3, 7, 18] },
+    { pos: 0.25, bg: [4, 21, 48] },
+    { pos: 0.5,  bg: [2, 26, 18] },
+    { pos: 0.75, bg: [3, 14, 30] },
+    { pos: 1.0,  bg: [2, 12, 27] },
   ];
 
   function lerpColor(a, b, t) {
@@ -83,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function getInterpolated(progress) {
-    // Find the two stops we're between
     let lower = colorStops[0];
     let upper = colorStops[colorStops.length - 1];
     for (let i = 0; i < colorStops.length - 1; i++) {
@@ -97,11 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const t = range === 0 ? 0 : (progress - lower.pos) / range;
 
     const bg = lerpColor(lower.bg, upper.bg, t);
-    const a0 = lerpColor(lower.aurora[0], upper.aurora[0], t);
-    const a1 = lerpColor(lower.aurora[1], upper.aurora[1], t);
-    const a2 = lerpColor(lower.aurora[2], upper.aurora[2], t);
-
-    return { bg, aurora: [a0, a1, a2] };
+    return { bg };
   }
 
   let ticking = false;
@@ -114,20 +111,27 @@ document.addEventListener('DOMContentLoaded', () => {
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0;
 
-      const { bg, aurora } = getInterpolated(progress);
-
+      // 1. Smoothly interpolate body background color
+      const { bg } = getInterpolated(progress);
       document.body.style.backgroundColor = `rgb(${Math.round(bg[0])}, ${Math.round(bg[1])}, ${Math.round(bg[2])})`;
 
-      if (auroraBg) {
-        const a0 = aurora[0];
-        const a1 = aurora[1];
-        const a2 = aurora[2];
-        auroraBg.style.background = `
-          radial-gradient(circle at 10% 20%, rgba(${Math.round(a0[0])},${Math.round(a0[1])},${Math.round(a0[2])},${a0[3].toFixed(2)}), transparent 35%),
-          radial-gradient(circle at 90% 80%, rgba(${Math.round(a1[0])},${Math.round(a1[1])},${Math.round(a1[2])},${a1[3].toFixed(2)}), transparent 35%),
-          radial-gradient(circle at 50% 50%, rgba(${Math.round(a2[0])},${Math.round(a2[1])},${Math.round(a2[2])},${a2[3].toFixed(2)}), transparent 45%)
-        `;
+      // 2. Hardware-accelerated crossfade of static aurora layers based on progress
+      let op1 = 0, op2 = 0, op3 = 0;
+      if (progress <= 0.5) {
+        const t = progress / 0.5; // 0 to 1
+        op1 = 1 - t;
+        op2 = t;
+        op3 = 0;
+      } else {
+        const t = (progress - 0.5) / 0.5; // 0 to 1
+        op1 = 0;
+        op2 = 1 - t;
+        op3 = t;
       }
+
+      if (auroraZone1) auroraZone1.style.opacity = op1.toFixed(3);
+      if (auroraZone2) auroraZone2.style.opacity = op2.toFixed(3);
+      if (auroraZone3) auroraZone3.style.opacity = op3.toFixed(3);
 
       // Shrink nav on scroll
       if (nav) {
