@@ -1526,3 +1526,477 @@ footer {
   }
 }
 
+/* =============================================
+   CV OVERLAY (SPA Modal)
+   ============================================= */
+#cv-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(3, 7, 18, 0.92);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  display: none;
+  overflow-y: auto;
+  padding: 2rem 1rem;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+#cv-overlay.open {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 1;
+}
+
+.cv-toolbar {
+  width: 100%;
+  max-width: 850px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.cv-btn {
+  font-family: var(--font-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cv-btn-close {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  color: var(--color-text);
+}
+
+.cv-btn-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(-3px);
+}
+
+.cv-btn-print {
+  background: linear-gradient(135deg, var(--color-aero-cyan) 0%, var(--color-aero-blue) 100%);
+  border: none;
+  color: #030712;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(0, 242, 254, 0.25);
+}
+
+.cv-btn-print:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 242, 254, 0.4);
+}
+
+.cv-card {
+  width: 100%;
+  max-width: 850px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-top: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.cv-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 3rem;
+}
+
+.cv-sidebar-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  padding-right: 2rem;
+}
+
+.cv-photo-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.cv-photo-circle {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--color-aero-cyan);
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+}
+
+.cv-photo-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cv-section-label {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  color: var(--color-aero-cyan);
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+  border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+  padding-bottom: 0.4rem;
+}
+
+.cv-contact-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  font-size: 0.85rem;
+}
+
+.cv-contact-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.cv-contact-lbl {
+  color: var(--color-text-light);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cv-contact-val {
+  color: var(--color-text);
+  word-break: break-all;
+}
+
+.cv-skills-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cv-skill-cat {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 0.2rem;
+}
+
+.cv-skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.cv-skill-tag {
+  font-size: 0.72rem;
+  padding: 0.2rem 0.55rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  color: var(--color-text-light);
+}
+
+.cv-edu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.cv-edu-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.8rem;
+}
+
+.cv-edu-year {
+  font-family: var(--font-mono);
+  color: var(--color-aero-cyan);
+  font-size: 0.72rem;
+}
+
+.cv-edu-title {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.cv-edu-school {
+  color: var(--color-text-light);
+  font-size: 0.72rem;
+}
+
+.cv-main-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.cv-name {
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #fff;
+  margin-bottom: 0.2rem;
+}
+
+.cv-job-title {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--color-aero-cyan);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.cv-profile-text {
+  font-size: 0.92rem;
+  color: var(--color-text-light);
+  text-align: justify;
+}
+
+.cv-exp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.cv-exp-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.cv-exp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.cv-exp-role {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.cv-exp-date {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-aero-cyan);
+}
+
+.cv-exp-company {
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+  font-weight: 500;
+}
+
+.cv-exp-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.15rem;
+}
+
+.cv-exp-bullets li {
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+  position: relative;
+  padding-left: 1rem;
+}
+
+.cv-exp-bullets li::before {
+  content: "▪";
+  position: absolute;
+  left: 0;
+  color: var(--color-aero-cyan);
+  font-size: 0.6rem;
+  top: 0.1rem;
+}
+
+@media (max-width: 768px) {
+  .cv-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .cv-sidebar-col {
+    border-right: none;
+    padding-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 2rem;
+  }
+  .cv-card {
+    padding: 2rem 1.5rem;
+  }
+}
+
+/* =============================================
+   PRINT — table-layout for bulletproof 1-page
+   ============================================= */
+@media print {
+  body > *:not(#cv-overlay) {
+    display: none !important;
+  }
+
+  #cv-overlay {
+    display: block !important;
+    position: static !important;
+    background: #fff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    opacity: 1 !important;
+  }
+
+  .cv-toolbar {
+    display: none !important;
+  }
+
+  .cv-card {
+    border: none !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  @page {
+    size: A4;
+    margin: 5mm 8mm;
+  }
+
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    font-size: 9pt !important;
+    line-height: 1.35 !important;
+  }
+
+  .cv-grid {
+    display: table !important;
+    width: 100% !important;
+    border-collapse: collapse !important;
+    table-layout: fixed !important;
+  }
+
+  .cv-sidebar-col {
+    display: table-cell !important;
+    width: 170px !important;
+    vertical-align: top !important;
+    border-right: 1px solid #ddd !important;
+    padding-right: 12px !important;
+  }
+
+  .cv-main-col {
+    display: table-cell !important;
+    vertical-align: top !important;
+    padding-left: 14px !important;
+  }
+
+  .cv-photo-circle {
+    width: 70px !important;
+    height: 70px !important;
+    border-color: #2563eb !important;
+  }
+
+  .cv-section-label {
+    color: #1e293b !important;
+    border-bottom: 1px solid #1e293b !important;
+    font-size: 0.7rem !important;
+    margin-bottom: 0.25rem !important;
+    padding-bottom: 0.1rem !important;
+  }
+
+  .cv-contact-lbl {
+    color: #666 !important;
+    font-size: 0.62rem !important;
+  }
+
+  .cv-contact-val {
+    color: #111 !important;
+    font-size: 0.75rem !important;
+  }
+
+  .cv-contact-list { gap: 0.3rem !important; }
+
+  .cv-skill-cat {
+    font-size: 0.7rem !important;
+    margin-bottom: 0.1rem !important;
+  }
+
+  .cv-skill-tag {
+    background: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #334155 !important;
+    font-size: 0.62rem !important;
+    padding: 0.05rem 0.3rem !important;
+  }
+
+  .cv-skill-tags { gap: 0.2rem !important; }
+  .cv-skills-group { gap: 0.5rem !important; }
+  .cv-edu-list { gap: 0.45rem !important; }
+
+  .cv-edu-year { color: #2563eb !important; font-size: 0.62rem !important; }
+  .cv-edu-title { color: #111 !important; font-size: 0.7rem !important; }
+  .cv-edu-school { color: #555 !important; font-size: 0.65rem !important; }
+
+  .cv-name { color: #111 !important; font-size: 1.5rem !important; margin-bottom: 0.1rem !important; }
+  .cv-job-title { color: #2563eb !important; font-size: 0.78rem !important; }
+  .cv-profile-text { color: #333 !important; font-size: 0.78rem !important; }
+  .cv-exp-list { gap: 0.7rem !important; }
+  .cv-exp-role { color: #111 !important; font-size: 0.85rem !important; }
+  .cv-exp-date { color: #2563eb !important; font-size: 0.68rem !important; }
+  .cv-exp-company { color: #444 !important; font-size: 0.72rem !important; }
+  .cv-exp-bullets { gap: 0.12rem !important; }
+  .cv-exp-bullets li { color: #333 !important; font-size: 0.74rem !important; line-height: 1.25 !important; }
+  .cv-exp-bullets li::before { color: #2563eb !important; }
+}
+
+/* =============================================
+   SCROLL REWARDS — Submarine Color Transitions
+   ============================================= */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-title-glow {
+  transition: text-shadow 1s ease, color 1s ease;
+}
+
+.section-title-glow.glowing {
+  text-shadow: 0 0 30px rgba(0, 242, 254, 0.4), 0 0 60px rgba(0, 242, 254, 0.15);
+}
+
+body {
+  transition: background-color 0.3s ease;
+}
+
+.aurora-bg {
+  transition: background 0.5s ease;
+}
+

@@ -19,18 +19,165 @@ document.addEventListener('DOMContentLoaded', () => {
   const turbulence = document.querySelector('#water-filter feTurbulence');
   const waterLens = document.querySelector('.water-lens');
 
-  // Shrink nav on scroll
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-      nav.style.padding = '0.5rem 2rem';
-      nav.style.background = 'rgba(15, 23, 42, 0.65)';
-    } else {
-      nav.style.padding = '0.8rem 2.5rem';
-      nav.style.background = 'rgba(15, 23, 42, 0.45)';
+  // CV Overlay SPA elements
+  const cvOverlay = document.getElementById('cv-overlay');
+  const cvCloseBtn = document.getElementById('cv-close-btn');
+  const cvOpenTriggers = document.querySelectorAll('.cv-open-trigger');
+
+  // Aurora background element for scroll color
+  const auroraBg = document.querySelector('.aurora-bg');
+
+  // =============================================
+  // CV OVERLAY SPA LOGIC
+  // =============================================
+  function openCV(e) {
+    if (e) e.preventDefault();
+    if (!cvOverlay) return;
+    cvOverlay.style.display = 'flex';
+    // Force reflow before adding class for transition
+    cvOverlay.offsetHeight;
+    cvOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCV() {
+    if (!cvOverlay) return;
+    cvOverlay.classList.remove('open');
+    // Wait for fade-out then hide
+    setTimeout(() => {
+      if (!cvOverlay.classList.contains('open')) {
+        cvOverlay.style.display = 'none';
+      }
+    }, 400);
+    document.body.style.overflow = '';
+  }
+
+  cvOpenTriggers.forEach(trigger => {
+    trigger.addEventListener('click', openCV);
+  });
+
+  if (cvCloseBtn) {
+    cvCloseBtn.addEventListener('click', closeCV);
+  }
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && cvOverlay && cvOverlay.classList.contains('open')) {
+      closeCV();
     }
   });
 
-  // Parallax droplet on mouse move
+  // =============================================
+  // SCROLL COLOR INTERPOLATION (Submarine theme)
+  // =============================================
+  const colorStops = [
+    { pos: 0.0,  bg: [3, 7, 18],     aurora: [[0,242,254,0.08], [59,130,246,0.06], [16,185,129,0.04]] },
+    { pos: 0.25, bg: [4, 21, 48],     aurora: [[0,210,230,0.10], [40,100,200,0.08], [10,150,120,0.05]] },
+    { pos: 0.5,  bg: [2, 26, 18],     aurora: [[0,200,180,0.12], [20,180,140,0.08], [0,255,200,0.06]] },
+    { pos: 0.75, bg: [3, 14, 30],     aurora: [[0,180,220,0.08], [30,80,180,0.06], [10,120,100,0.04]] },
+    { pos: 1.0,  bg: [2, 12, 27],     aurora: [[0,150,200,0.05], [20,60,140,0.04], [5,80,70,0.03]] },
+  ];
+
+  function lerpColor(a, b, t) {
+    return a.map((v, i) => v + (b[i] - v) * t);
+  }
+
+  function getInterpolated(progress) {
+    // Find the two stops we're between
+    let lower = colorStops[0];
+    let upper = colorStops[colorStops.length - 1];
+    for (let i = 0; i < colorStops.length - 1; i++) {
+      if (progress >= colorStops[i].pos && progress <= colorStops[i + 1].pos) {
+        lower = colorStops[i];
+        upper = colorStops[i + 1];
+        break;
+      }
+    }
+    const range = upper.pos - lower.pos;
+    const t = range === 0 ? 0 : (progress - lower.pos) / range;
+
+    const bg = lerpColor(lower.bg, upper.bg, t);
+    const a0 = lerpColor(lower.aurora[0], upper.aurora[0], t);
+    const a1 = lerpColor(lower.aurora[1], upper.aurora[1], t);
+    const a2 = lerpColor(lower.aurora[2], upper.aurora[2], t);
+
+    return { bg, aurora: [a0, a1, a2] };
+  }
+
+  let ticking = false;
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0;
+
+      const { bg, aurora } = getInterpolated(progress);
+
+      document.body.style.backgroundColor = `rgb(${Math.round(bg[0])}, ${Math.round(bg[1])}, ${Math.round(bg[2])})`;
+
+      if (auroraBg) {
+        const a0 = aurora[0];
+        const a1 = aurora[1];
+        const a2 = aurora[2];
+        auroraBg.style.background = `
+          radial-gradient(circle at 10% 20%, rgba(${Math.round(a0[0])},${Math.round(a0[1])},${Math.round(a0[2])},${a0[3].toFixed(2)}), transparent 35%),
+          radial-gradient(circle at 90% 80%, rgba(${Math.round(a1[0])},${Math.round(a1[1])},${Math.round(a1[2])},${a1[3].toFixed(2)}), transparent 35%),
+          radial-gradient(circle at 50% 50%, rgba(${Math.round(a2[0])},${Math.round(a2[1])},${Math.round(a2[2])},${a2[3].toFixed(2)}), transparent 45%)
+        `;
+      }
+
+      // Shrink nav on scroll
+      if (nav) {
+        if (scrollTop > 50) {
+          nav.style.padding = '0.5rem 2rem';
+          nav.style.background = 'rgba(15, 23, 42, 0.65)';
+        } else {
+          nav.style.padding = '0.8rem 2.5rem';
+          nav.style.background = 'rgba(15, 23, 42, 0.45)';
+        }
+      }
+
+      ticking = false;
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // =============================================
+  // SCROLL REVEAL — IntersectionObserver
+  // =============================================
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+
+        // Check for section title glow children
+        const glowTitle = entry.target.querySelector('.section-title-glow');
+        if (glowTitle) {
+          glowTitle.classList.add('glowing');
+          // Remove glow after animation
+          setTimeout(() => glowTitle.classList.remove('glowing'), 2000);
+        }
+
+        // Also handle direct glow elements
+        if (entry.target.classList.contains('section-title-glow')) {
+          entry.target.classList.add('glowing');
+          setTimeout(() => entry.target.classList.remove('glowing'), 2000);
+        }
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.scroll-reveal').forEach(el => {
+    revealObserver.observe(el);
+  });
+
+  // =============================================
+  // PARALLAX DROPLET
+  // =============================================
   window.addEventListener('mousemove', (e) => {
     if (!dropletContainer) return;
     const x = (e.clientX / window.innerWidth - 0.5) * 40;
@@ -38,7 +185,9 @@ document.addEventListener('DOMContentLoaded', () => {
     dropletContainer.style.transform = `translate3d(${x}px, ${y}px, 0)`;
   });
 
-  // Water Lens Positioning and SVG Ripple Physics
+  // =============================================
+  // WATER LENS
+  // =============================================
   let mouseX = 0;
   let mouseY = 0;
   let lensX = 0;
@@ -55,43 +204,37 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!hasMoved) {
       hasMoved = true;
       if (waterLens) waterLens.classList.add('active');
-      // Set initial position instantly to avoid slide-in on page entry
       lensX = mouseX;
       lensY = mouseY;
     }
     
     if (displacement && turbulence) {
-      // Scale ripple intensity slightly based on mouse movement speed
       targetScale = 15; 
-      
-      // Shift baseFrequency slightly based on coordinate ratios to propagate waves
       const x = e.clientX / window.innerWidth;
       const y = e.clientY / window.innerHeight;
       turbulence.setAttribute('baseFrequency', `${0.015 + x * 0.005} ${0.015 + y * 0.005}`);
     }
   });
 
-  // Smooth easing loop
   function animateLens() {
     if (hasMoved && waterLens) {
-      // Easing interpolation (lerp)
       lensX += (mouseX - lensX) * 0.12;
       lensY += (mouseY - lensY) * 0.12;
-      
-      // Centering the lens (180px width/height -> offset by 90px)
       waterLens.style.transform = `translate3d(${lensX - 90}px, ${lensY - 90}px, 0)`;
     }
 
     if (displacement) {
       currentScale += (targetScale - currentScale) * 0.08;
       displacement.setAttribute('scale', currentScale);
-      targetScale *= 0.94; // Decay water ripple scale back to 0
+      targetScale *= 0.94;
     }
     requestAnimationFrame(animateLens);
   }
   requestAnimationFrame(animateLens);
 
-  // Project data for the MiniDiscs reader
+  // =============================================
+  // PROJECT READER
+  // =============================================
   const projectData = {
     'project-1': {
       title: 'Borda Silente',
@@ -113,15 +256,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // MiniDiscs Interactions
   minidiscs.forEach(disc => {
     disc.addEventListener('click', () => {
       const projId = disc.getAttribute('data-project');
-      if (!projId) return; // Ignore disabled projects in progress
+      if (!projId) return;
       const data = projectData[projId];
 
       if (data && projectReader) {
-        // Slide out animation effect
         projectReader.classList.remove('open');
         
         setTimeout(() => {
@@ -131,7 +272,6 @@ document.addEventListener('DOMContentLoaded', () => {
           if (readerGithub) readerGithub.setAttribute('href', data.github);
           projectReader.classList.add('open');
           
-          // Smooth scroll to the reader display so it's visible on mobile
           setTimeout(() => {
             projectReader.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           }, 100);
@@ -146,23 +286,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Trigger hydro-reactor cylinder liquid fill and bubbles on scroll
+  // =============================================
+  // HYDRO-REACTOR SCROLL TRIGGER
+  // =============================================
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        if (liquidGlow) {
-          liquidGlow.style.height = '95%';
-        }
-        if (bubbleChamber) {
-          bubbleChamber.style.opacity = '1';
-        }
+        if (liquidGlow) liquidGlow.style.height = '95%';
+        if (bubbleChamber) bubbleChamber.style.opacity = '1';
       } else {
-        if (liquidGlow) {
-          liquidGlow.style.height = '0%';
-        }
-        if (bubbleChamber) {
-          bubbleChamber.style.opacity = '0';
-        }
+        if (liquidGlow) liquidGlow.style.height = '0%';
+        if (bubbleChamber) bubbleChamber.style.opacity = '0';
       }
     });
   }, { threshold: 0.2 });
@@ -171,7 +305,9 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(productivitySection);
   }
 
-  // Scenario Explorer (Liquid Brancher) Interactions
+  // =============================================
+  // SCENARIO EXPLORER (Liquid Brancher)
+  // =============================================
   const dropletNodes = document.querySelectorAll('.droplet-node');
   const brancherTitle = document.getElementById('brancher-title');
   const brancherSubtitle = document.getElementById('brancher-subtitle');
@@ -245,7 +381,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Version Badge Click Animation
+  // =============================================
+  // VERSION BADGE
+  // =============================================
   const versionBtn = document.getElementById('version-badge-btn');
   if (versionBtn) {
     const syncText = versionBtn.querySelector('.sync-text');
@@ -256,7 +394,6 @@ document.addEventListener('DOMContentLoaded', () => {
         versionBtn.classList.add('expanded');
         syncText.style.display = 'inline';
         
-        // Auto-collapse after 4 seconds
         setTimeout(() => {
           versionBtn.classList.remove('expanded');
           setTimeout(() => {
