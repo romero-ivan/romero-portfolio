@@ -227,8 +227,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const coreText = document.querySelector('.blob-core-text');
         if (coreText) coreText.innerText = "Requerimiento";
 
-        brancherTitle.innerText = "Explorador de Escenarios";
-        brancherSubtitle.innerText = "Pasa el ratón por los nodos de la izquierda para ver cómo enfoco las soluciones.";
+        brancherTitle.innerText = "Evaluación Multidimensional de Soluciones";
+        brancherSubtitle.innerText = "Interactúa con los nodos de la izquierda para evaluar mi enfoque analítico ante diferentes escenarios críticos.";
         brancherGrid.style.display = 'none';
       });
     }
