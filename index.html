@@ -5,19 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Romero - Experto en LLMs y Entornos de Código Agente (ACE)." />
     <title>Romero | Experto en IA & Sistemas Agentes</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="stylesheet" href="./style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Outfit:wght@300;400;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+      .water-lens {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        backdrop-filter: url('#water-filter') saturate(130%);
+        -webkit-backdrop-filter: url('#water-filter') saturate(130%);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 
+          inset 0 1px 1px rgba(255, 255, 255, 0.12), 
+          inset 0 0 0 1px rgba(255, 255, 255, 0.03), 
+          0 8px 32px rgba(0, 0, 0, 0.35);
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.0) 100%);
+        will-change: transform;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+      }
+
+      .water-lens.active {
+        opacity: 1;
+      }
+    </style>
   </head>
   <body>
-    <!-- SVG Water Distortion Filter (used by the floating lens) -->
+    <!-- SVG Lens Prism & Spherical Refraction Filter (used by the floating lens) -->
     <svg style="position: absolute; width: 0; height: 0;" width="0" height="0" version="1.1" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <filter id="water-filter">
-          <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" result="displacement" />
+      <defs>        <filter id="water-filter">
+          <!-- Load self-contained SVG displacement map stretched to fill the filter bounding box -->
+          <feImage href="data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%23808080'/%3E%3Cstop offset='70%25' stop-color='%23d0d080'/%3E%3Cstop offset='100%25' stop-color='%23808080'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23g)'/%3E%3C/svg%3E" x="0%" y="0%" width="100%" height="100%" result="map" />
+          
+          <!-- Displace Source Graphic to simulate magnification/glass lens refraction -->
+          <feDisplacementMap in="SourceGraphic" in2="map" scale="22" xChannelSelector="R" yChannelSelector="G" />
         </filter>
       </defs>
     </svg>
@@ -38,12 +67,25 @@
     <nav class="glass-nav">
       <div class="nav-brand">ROMERO.</div>
       <ul class="nav-links">
-        <li><a href="#about">Sobre mí</a></li>
-        <li><a href="#projects">Proyectos</a></li>
-        <li><a href="#productivity">Rendimiento</a></li>
-        <li><a href="#cv" class="cv-open-trigger">CV</a></li>
+        <li><a href="#about" data-translate="nav-about">Sobre mí</a></li>
+        <li><a href="#projects" data-translate="nav-projects">Proyectos</a></li>
+        <li><a href="#productivity" data-translate="nav-productivity">Rendimiento</a></li>
+        <li><a href="#cv" class="cv-open-trigger" data-translate="nav-cv">CV</a></li>
       </ul>
-      <a href="#contact" class="glass-button nav-btn">Contactar</a>
+      <div class="nav-right-group">
+        <!-- Lens Enable/Disable Button (Desktop Only) -->
+        <button id="lens-toggle-btn" class="lens-toggle-btn" aria-label="Toggle Magnifying Glass">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block; position: relative;">
+            <circle cx="12" cy="12" r="8"></circle>
+            <line id="lens-slash" x1="18" y1="6" x2="6" y2="18"></line>
+          </svg>
+        </button>
+        
+        <button id="lang-toggle-btn" class="lang-toggle-btn" aria-label="Toggle language">
+          <span class="lang-label">ES</span>
+        </button>
+        <a href="#contact" class="glass-button nav-btn" data-translate="nav-contact">Contactar</a>
+      </div>
     </nav>
 
     <!-- Ambient Floating Tech Stream (Replacing the cheap marquee) -->
@@ -70,12 +112,12 @@
       <section id="about" class="hero">
         <div class="hero-content">
           <p class="subtitle">IVÁN ROMERO</p>
-          <h1 class="title">Desarrollo de<br>Software Interactivo.</h1>
-          <p class="description">
+          <h1 class="title" data-translate="hero-title">Desarrollo de<br>Software Interactivo.</h1>
+          <p class="description" data-translate="hero-desc">
             Soy desarrollador generalista. Mi trayectoria autodidacta y experiencia con la informática y la IA hacen que el desarrollo me resulte intuitivo, centrado en evitar código descuidado (slop) y con un fuerte enfoque en rendimiento, seguridad y auditabilidad. Me especializo en frontend interactivo, backend y despliegues en Google Cloud.
           </p>
-          <a href="#projects" class="glass-button primary">Ver Proyectos</a>
-          <a href="#cv" class="glass-button secondary cv-open-trigger" style="margin-left: 10px; border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.05);">Ver CV</a>
+          <a href="#projects" class="glass-button primary" data-translate="hero-btn-projects">Ver Proyectos</a>
+          <a href="#cv" class="glass-button secondary cv-open-trigger" style="margin-left: 10px;" data-translate="hero-btn-cv">Ver CV</a>
         </div>
         
         <div class="hero-visual">
@@ -91,7 +133,7 @@
       <!-- Projects Area (Skeuomorphic Shelf) -->
       <section id="projects" class="projects-section">
         <div class="section-header scroll-reveal">
-          <h2 class="section-title section-title-glow">Proyectos</h2>
+          <h2 class="section-title section-title-glow" data-translate="sect-projects-title">Proyectos</h2>
         </div>
 
         <div class="shelf-container">
@@ -102,7 +144,11 @@
                 <div class="disc-label">BORDA SILENTE</div>
                 <div class="disc-hub"></div>
               </div>
-              <div class="case-sleeve">01 // HOTEL</div>
+              <div class="case-sleeve">
+                <div class="sleeve-logo-wrapper">
+                  <span class="sleeve-letter">H</span>
+                </div>
+              </div>
             </div>
             
             <!-- MiniDisc Case 2 -->
@@ -111,7 +157,16 @@
                 <div class="disc-label">SMOKING SIM</div>
                 <div class="disc-hub"></div>
               </div>
-              <div class="case-sleeve">02 // JUEGO</div>
+              <div class="case-sleeve">
+                <div class="sleeve-logo-wrapper">
+                  <svg class="sleeve-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 12h4M8 10v4"></path>
+                    <circle cx="16" cy="11" r="1.2" fill="currentColor"></circle>
+                    <circle cx="18" cy="13" r="1.2" fill="currentColor"></circle>
+                    <rect x="2" y="6" width="20" height="12" rx="3.5"></rect>
+                  </svg>
+                </div>
+              </div>
             </div>
 
             <!-- MiniDisc Case 3 -->
@@ -120,14 +175,25 @@
                 <div class="disc-label">AERO DESKTOP</div>
                 <div class="disc-hub"></div>
               </div>
-              <div class="case-sleeve">03 // WINDOWS-XP</div>
+              <div class="case-sleeve">
+                <div class="sleeve-logo-wrapper">
+                  <svg class="sleeve-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <g transform="rotate(-10 11 13) translate(0.5, -0.5)">
+                      <path d="M3.5 6.5 C 5.5 5 8.5 5 10.5 6 L 10.5 12.5 C 8.5 11.5 5.5 11.5 3.5 13 Z" fill="currentColor" fill-opacity="0.15"></path>
+                      <path d="M12.5 6.5 C 14.5 7.5 17.5 8 19.5 7 L 19.5 13.5 C 17.5 14.5 14.5 14 12.5 13 Z" fill="currentColor" fill-opacity="0.15"></path>
+                      <path d="M3.5 14.5 C 5.5 13 8.5 13 10.5 14 L 10.5 20.5 C 8.5 19.5 5.5 19.5 3.5 21 Z" fill="currentColor" fill-opacity="0.15"></path>
+                      <path d="M12.5 14.5 C 14.5 15.5 17.5 16 19.5 15 L 19.5 21.5 C 17.5 22.5 14.5 22 12.5 21 Z" fill="currentColor" fill-opacity="0.15"></path>
+                    </g>
+                  </svg>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Second shelf: Projects in progress (Cannot be opened) -->
         <div style="margin-top: 5rem; text-align: center;">
-          <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-light); margin-bottom: 3.2rem; letter-spacing: 2px;">
+          <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-light); margin-bottom: 3.2rem; letter-spacing: 2px;" data-translate="shelf-progress-title">
             SISTEMAS EN DESARROLLO (NO DISPONIBLES)
           </div>
           <div class="shelf-container" style="padding-top: 8.5rem !important; padding-bottom: 3rem !important; margin-top: 0 !important;">
@@ -135,7 +201,7 @@
               <!-- MiniDisc In Progress 1 -->
               <div class="minidisc-case disabled-disc" style="opacity: 0.35; filter: grayscale(1);">
                 <div class="minidisc color-cyan">
-                  <div class="disc-label">CIBERSEGURIDAD</div>
+                  <div class="disc-label" data-translate="disc-sec">CIBERSEGURIDAD</div>
                   <div class="disc-hub"></div>
                 </div>
                 <div class="case-sleeve">SEC // IN PROGRESS</div>
@@ -144,7 +210,7 @@
               <!-- MiniDisc In Progress 2 -->
               <div class="minidisc-case disabled-disc" style="opacity: 0.35; filter: grayscale(1);">
                 <div class="minidisc color-green">
-                  <div class="disc-label">DISTRIBUCIÓN</div>
+                  <div class="disc-label" data-translate="disc-dist">DISTRIBUCIÓN</div>
                   <div class="disc-hub"></div>
                 </div>
                 <div class="case-sleeve">DIST // IN PROGRESS</div>
@@ -153,7 +219,7 @@
               <!-- MiniDisc In Progress 3 -->
               <div class="minidisc-case disabled-disc" style="opacity: 0.35; filter: grayscale(1);">
                 <div class="minidisc color-pink">
-                  <div class="disc-label">VIDEOJUEGOS</div>
+                  <div class="disc-label" data-translate="disc-game">VIDEOJUEGOS</div>
                   <div class="disc-hub"></div>
                 </div>
                 <div class="case-sleeve">GAME // IN PROGRESS</div>
@@ -162,7 +228,7 @@
               <!-- MiniDisc In Progress 4 -->
               <div class="minidisc-case disabled-disc" style="opacity: 0.35; filter: grayscale(1);">
                 <div class="minidisc color-cyan">
-                  <div class="disc-label">MARKETING</div>
+                  <div class="disc-label" data-translate="disc-mktg">MARKETING</div>
                   <div class="disc-hub"></div>
                 </div>
                 <div class="case-sleeve">MKTG // IN PROGRESS</div>
@@ -171,7 +237,7 @@
               <!-- MiniDisc In Progress 5 -->
               <div class="minidisc-case disabled-disc" style="opacity: 0.35; filter: grayscale(1);">
                 <div class="minidisc color-green">
-                  <div class="disc-label">SOCIALIZACIÓN</div>
+                  <div class="disc-label" data-translate="disc-soc">SOCIALIZACIÓN</div>
                   <div class="disc-hub"></div>
                 </div>
                 <div class="case-sleeve">SOC // IN PROGRESS</div>
@@ -180,7 +246,7 @@
               <!-- MiniDisc In Progress 6 -->
               <div class="minidisc-case disabled-disc" style="opacity: 0.35; filter: grayscale(1);">
                 <div class="minidisc color-pink">
-                  <div class="disc-label">Y MÁS</div>
+                  <div class="disc-label" data-translate="disc-etc">Y MÁS</div>
                   <div class="disc-hub"></div>
                 </div>
                 <div class="case-sleeve">ETC // IN PROGRESS</div>
@@ -191,17 +257,40 @@
 
         <!-- Glass Reader Display (Slides down when a project is selected) -->
         <div class="glass-reader-display" id="project-reader">
+          <button class="reader-nav-btn prev-btn" aria-label="Previous Project">&larr;</button>
+          <button class="reader-nav-btn next-btn" aria-label="Next Project">&rarr;</button>
+          
           <div class="reader-header">
-            <div class="reader-status"><span class="pulse-led"></span> MÓDULO SELECCIONADO</div>
-            <button class="close-reader">&times;</button>
+            <div class="reader-status"><span class="pulse-led"></span> <span data-translate="reader-selected-module">MÓDULO SELECCIONADO</span></div>
+            <button class="close-reader" aria-label="Close Reader">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
           </div>
           <div class="reader-content">
-            <h3 id="reader-title">Selecciona un proyecto...</h3>
-            <p id="reader-desc">Selecciona un módulo técnico para visualizar la descripción detallada de su arquitectura.</p>
-            <div class="reader-links" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 1.2rem;">
-              <a href="#" class="glass-button compact-btn" id="reader-link" target="_blank">Ver Demo &rarr;</a>
-              <a href="#" class="glass-button compact-btn" id="reader-github" target="_blank" style="border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.05);">Código GitHub</a>
+            <h3 id="reader-title" data-translate="reader-placeholder-title">Selecciona un proyecto...</h3>
+            <p id="reader-desc" data-translate="reader-placeholder-desc">Selecciona un módulo técnico para visualizar la descripción detallada de su arquitectura.</p>
+            
+            <div class="project-media" id="reader-media" style="display: none;">
+              <img src="/demo-borda.png" alt="Borda Silente" class="project-screenshot" id="reader-img-project-1" style="display: none;">
+              <img src="/demo-smoking.png" alt="Smoking Sim" class="project-screenshot" id="reader-img-project-2" style="display: none;">
+              <img src="/demo-aero.png" alt="Aero Desktop" class="project-screenshot" id="reader-img-project-3" style="display: none;">
             </div>
+            
+            <dl class="project-specs" id="reader-specs" style="display: none;"></dl>
+            
+            <div class="reader-links" id="reader-links">
+              <a href="#" class="glass-button compact-btn" id="reader-link" target="_blank" data-translate="reader-btn-demo">Demo &rarr;</a>
+              <a href="#" class="glass-button compact-btn github-stamp" id="reader-github" target="_blank" aria-label="GitHub Code">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+              </a>
+            </div>
+            
+            
           </div>
         </div>
       </section>
@@ -209,15 +298,15 @@
       <!-- Productivity Section -->
       <section id="productivity" class="productivity-section">
         <div class="section-header scroll-reveal">
-          <span class="jp-sub">EFICIENCIA</span>
-          <h2 class="section-title section-title-glow">Optimización del Flujo de Trabajo</h2>
-          <p class="section-desc">Comparación del rendimiento y velocidad de desarrollo utilizando automatización asistida frente a métodos tradicionales.</p>
+          <span class="jp-sub" data-translate="sect-productivity-sub">EFICIENCIA</span>
+          <h2 class="section-title section-title-glow" data-translate="sect-productivity-title">Optimización del Flujo de Trabajo</h2>
+          <p class="section-desc" data-translate="sect-productivity-desc">Comparación del rendimiento y velocidad de desarrollo utilizando automatización asistida frente a métodos tradicionales.</p>
         </div>
 
         <div class="reactor-dashboard">
           <!-- Standard Developer (Skeuomorphic Glass Hourglass) -->
           <div class="glass-card reactor-chamber chamber-slow">
-            <h3>Desarrollo Convencional</h3>
+            <h3 data-translate="reactor-slow-title">Desarrollo Convencional</h3>
             <div class="hourglass-structure">
               <div class="glass-hourglass">
                 <div class="hourglass-bulb top">
@@ -235,13 +324,13 @@
             </div>
             <div class="gauge-area">
               <span class="multiplier">1x</span>
-              <span class="gauge-label">Escritura y depuración manual</span>
+              <span class="gauge-label" data-translate="reactor-slow-desc">Escritura y depuración manual</span>
             </div>
           </div>
 
           <!-- Romero (Bioluminescent Cylinder with 3D waves) -->
           <div class="glass-card reactor-chamber chamber-fast">
-            <h3>Desarrollo Asistido</h3>
+            <h3 data-translate="reactor-fast-title">Desarrollo Asistido</h3>
             <div class="glass-cylinder">
               <!-- Animated liquid with 3D wave mechanics inside -->
               <div class="liquid-glow">
@@ -260,7 +349,7 @@
             </div>
             <div class="gauge-area">
               <span class="multiplier glow-text">100x</span>
-              <span class="gauge-label">Automatización y optimización</span>
+              <span class="gauge-label" data-translate="reactor-fast-desc">Automatización y optimización</span>
             </div>
           </div>
         </div>
@@ -269,9 +358,9 @@
       <!-- Scenario Explorer Section -->
       <section id="thinking" class="thinking-section">
         <div class="section-header scroll-reveal">
-          <span class="jp-sub">METODOLOGÍA</span>
-          <h2 class="section-title section-title-glow">Análisis y Planificación</h2>
-          <p class="section-desc">Evaluación estructurada de requisitos y diseño de arquitectura para optimizar la fiabilidad antes de escribir código.</p>
+          <span class="jp-sub" data-translate="sect-thinking-sub">METODOLOGÍA</span>
+          <h2 class="section-title section-title-glow" data-translate="sect-thinking-title">Análisis y Planificación</h2>
+          <p class="section-desc" data-translate="sect-thinking-desc">Evaluación estructurada de requisitos y diseño de arquitectura para optimizar la fiabilidad antes de escribir código.</p>
         </div>
 
         <div class="brancher-visualizer">
@@ -287,51 +376,51 @@
             <!-- Central Organic Blob -->
             <div class="blob-core">
               <div class="blob-liquid"></div>
-              <div class="blob-core-text">Requerimiento</div>
+              <div class="blob-core-text" data-translate="blob-core">Requerimiento</div>
             </div>
 
             <!-- Satelite Droplets -->
             <div class="droplet-node node-top" data-branch="efficiency">
               <div class="droplet-hover-target"></div>
               <div class="droplet-visual">
-                <span>Rendimiento</span>
+                <span data-translate="node-efficiency">Rendimiento</span>
               </div>
             </div>
 
             <div class="droplet-node node-right" data-branch="failures">
               <div class="droplet-hover-target"></div>
               <div class="droplet-visual">
-                <span>Errores</span>
+                <span data-translate="node-failures">Errores</span>
               </div>
             </div>
 
             <div class="droplet-node node-bottom" data-branch="features">
               <div class="droplet-hover-target"></div>
               <div class="droplet-visual">
-                <span>Negocio</span>
+                <span data-translate="node-features">Negocio</span>
               </div>
             </div>
 
             <div class="droplet-node node-left" data-branch="scalability">
               <div class="droplet-hover-target"></div>
               <div class="droplet-visual">
-                <span>Futuro</span>
+                <span data-translate="node-scalability">Futuro</span>
               </div>
             </div>
           </div>
 
           <!-- Simple, non-pedantic description cards -->
           <div class="brancher-text-panel">
-            <h3 id="brancher-title">Evaluación Multidimensional de Soluciones</h3>
-            <p id="brancher-subtitle">Interactúa con los nodos de la izquierda para evaluar mi enfoque analítico ante diferentes escenarios críticos.</p>
+            <h3 id="brancher-title" data-translate="brancher-default-title">Evaluación Multidimensional de Soluciones</h3>
+            <p id="brancher-subtitle" data-translate="brancher-default-desc">Interactúa con los nodos de la izquierda para evaluar mi enfoque analítico ante diferentes escenarios críticos.</p>
             
             <div class="brancher-grid" id="brancher-grid" style="display: none;">
               <div class="brancher-card card-standard">
-                <span class="card-title">Desarrollador Común</span>
+                <span class="card-title" data-translate="brancher-card-slow">Desarrollador Común</span>
                 <p id="txt-standard">-</p>
               </div>
               <div class="brancher-card card-romero">
-                <span class="card-title glow-cyan">Mi Enfoque</span>
+                <span class="card-title glow-cyan" data-translate="brancher-card-fast">Mi Enfoque</span>
                 <p id="txt-romero">-</p>
               </div>
             </div>
@@ -342,17 +431,28 @@
       <!-- Contact Section -->
       <section id="contact" class="contact-section scroll-reveal">
         <div class="glass-panel">
-          <h2 class="section-title-glow">Contacto</h2>
+          <h2 class="section-title-glow" data-translate="sect-contact-title">Contacto</h2>
           <div class="contact-info">
-            <p class="email-text">pirebat@gmail.com</p>
-            <div class="whatsapp-fluid-orb-container">
-              <a href="https://wa.me/34655279868" target="_blank" class="whatsapp-fluid-orb">
+            <div class="contact-orbs-wrapper">
+              <!-- WhatsApp Orb -->
+              <a href="https://wa.me/34655279868" target="_blank" class="contact-fluid-orb whatsapp-orb">
                 <div class="orb-water-bg"></div>
                 <div class="orb-content">
-                  <svg class="wa-icon-minimal" viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+                  <svg class="contact-icon-minimal" viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.454 5.709 1.455h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
                   </svg>
                   <span class="orb-text">Chat // +34 655 27 98 68</span>
+                </div>
+              </a>
+
+              <!-- Gmail Orb -->
+              <a href="mailto:pirebat@gmail.com" class="contact-fluid-orb gmail-orb">
+                <div class="orb-water-bg"></div>
+                <div class="orb-content">
+                  <svg class="contact-icon-minimal" viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                  </svg>
+                  <span class="orb-text">Email // pirebat@gmail.com</span>
                 </div>
               </a>
             </div>
@@ -369,8 +469,8 @@
     <!-- CV Overlay (SPA Modal) -->
     <div id="cv-overlay">
       <div class="cv-toolbar">
-        <button class="cv-btn cv-btn-close" id="cv-close-btn">&larr; Volver al Portfolio</button>
-        <button class="cv-btn cv-btn-print" onclick="window.print()">Imprimir / Guardar en PDF</button>
+        <button class="cv-btn cv-btn-close" id="cv-close-btn" data-translate="cv-btn-back">&larr; Volver al Portfolio</button>
+        <button class="cv-btn cv-btn-print" onclick="window.print()" data-translate="cv-btn-print">Imprimir / Guardar en PDF</button>
       </div>
       <div class="cv-card">
         <div class="cv-grid">
@@ -381,19 +481,19 @@
               </div>
             </div>
             <div>
-              <h3 class="cv-section-label">Contacto</h3>
+              <h3 class="cv-section-label" data-translate="cv-sidebar-contact">Contacto</h3>
               <ul class="cv-contact-list">
-                <li class="cv-contact-item"><span class="cv-contact-lbl">Teléfono</span><span class="cv-contact-val">+34 655 27 98 68</span></li>
-                <li class="cv-contact-item"><span class="cv-contact-lbl">Email</span><span class="cv-contact-val">pirebat@gmail.com</span></li>
-                <li class="cv-contact-item"><span class="cv-contact-lbl">Ubicación</span><span class="cv-contact-val">Huesca, España</span></li>
-                <li class="cv-contact-item"><span class="cv-contact-lbl">Licencia</span><span class="cv-contact-val">Carné de conducir: B</span></li>
+                <li class="cv-contact-item"><span class="cv-contact-lbl" data-translate="cv-phone">Teléfono</span><span class="cv-contact-val">+34 655 27 98 68</span></li>
+                <li class="cv-contact-item"><span class="cv-contact-lbl" data-translate="cv-email">Email</span><span class="cv-contact-val">pirebat@gmail.com</span></li>
+                <li class="cv-contact-item"><span class="cv-contact-lbl" data-translate="cv-location">Ubicación</span><span class="cv-contact-val" data-translate="cv-loc-val">Huesca, España</span></li>
+                <li class="cv-contact-item"><span class="cv-contact-lbl" data-translate="cv-license">Licencia</span><span class="cv-contact-val" data-translate="cv-lic-val">Carné de conducir: B</span></li>
               </ul>
             </div>
             <div>
-              <h3 class="cv-section-label">Habilidades</h3>
+              <h3 class="cv-section-label" data-translate="cv-skills">Habilidades</h3>
               <div class="cv-skills-group">
                 <div>
-                  <div class="cv-skill-cat">Frontend &amp; Interactividad</div>
+                  <div class="cv-skill-cat" data-translate="cv-skills-frontend">Frontend &amp; Interactividad</div>
                   <div class="cv-skill-tags">
                     <span class="cv-skill-tag">HTML5 / CSS3</span>
                     <span class="cv-skill-tag">JavaScript (ES6+)</span>
@@ -401,11 +501,11 @@
                     <span class="cv-skill-tag">Angular</span>
                     <span class="cv-skill-tag">Three.js (3D)</span>
                     <span class="cv-skill-tag">Pointer Events</span>
-                    <span class="cv-skill-tag">Layouts 3D</span>
+                    <span class="cv-skill-tag" data-translate="cv-skill-layout3d">Layouts 3D</span>
                   </div>
                 </div>
                 <div>
-                  <div class="cv-skill-cat">Backend &amp; Cloud</div>
+                  <div class="cv-skill-cat" data-translate="cv-skills-backend">Backend &amp; Cloud</div>
                   <div class="cv-skill-tags">
                     <span class="cv-skill-tag">Firebase Auth</span>
                     <span class="cv-skill-tag">Firestore NoSQL</span>
@@ -416,53 +516,53 @@
                   </div>
                 </div>
                 <div>
-                  <div class="cv-skill-cat">Automatización &amp; Lógica</div>
+                  <div class="cv-skill-cat" data-translate="cv-skills-logic">Automatización &amp; Lógica</div>
                   <div class="cv-skill-tags">
                     <span class="cv-skill-tag">AI Workflows</span>
-                    <span class="cv-skill-tag">Lógica Industrial</span>
-                    <span class="cv-skill-tag">Control de Sistemas</span>
-                    <span class="cv-skill-tag">Auditoría Código</span>
+                    <span class="cv-skill-tag" data-translate="cv-skill-industrial">Lógica Industrial</span>
+                    <span class="cv-skill-tag" data-translate="cv-skill-control">Control de Sistemas</span>
+                    <span class="cv-skill-tag" data-translate="cv-skill-audit">Auditoría Código</span>
                   </div>
                 </div>
               </div>
             </div>
             <div>
-              <h3 class="cv-section-label">Educación</h3>
+              <h3 class="cv-section-label" data-translate="cv-education">Educación</h3>
               <div class="cv-edu-list">
-                <div class="cv-edu-item"><span class="cv-edu-year">En curso (Paso a 2º)</span><span class="cv-edu-title">Grado Medio en Instalaciones Eléctricas y Automáticas</span><span class="cv-edu-school">CPIFP Pirámide</span></div>
-                <div class="cv-edu-item"><span class="cv-edu-year">2019</span><span class="cv-edu-title">Grado Medio en Gestión Administrativa</span><span class="cv-edu-school">I.E.S. Sierra de Guara</span></div>
-                <div class="cv-edu-item"><span class="cv-edu-year">2016</span><span class="cv-edu-title">Educación Secundaria Obligatoria</span><span class="cv-edu-school">I.E.S. Lucas Mallada</span></div>
+                <div class="cv-edu-item"><span class="cv-edu-year" data-translate="cv-edu-ongoing">En curso (Paso a 2º)</span><span class="cv-edu-title" data-translate="cv-edu-electricity">Grado Medio en Instalaciones Eléctricas y Automáticas</span><span class="cv-edu-school">CPIFP Pirámide</span></div>
+                <div class="cv-edu-item"><span class="cv-edu-year">2019</span><span class="cv-edu-title" data-translate="cv-edu-admin">Grado Medio en Gestión Administrativa</span><span class="cv-edu-school">I.E.S. Sierra de Guara</span></div>
+                <div class="cv-edu-item"><span class="cv-edu-year">2016</span><span class="cv-edu-title" data-translate="cv-edu-eso">Educación Secundaria Obligatoria</span><span class="cv-edu-school">I.E.S. Lucas Mallada</span></div>
               </div>
             </div>
           </div>
           <div class="cv-main-col">
             <div>
-              <h1 class="cv-name">Iván Romero Figueroa</h1>
-              <span class="cv-job-title">Desarrollador de Software &amp; Lógica de Sistemas</span>
+              <h1 class="cv-name" data-translate="cv-name">Iván Romero Figueroa</h1>
+              <span class="cv-job-title" data-translate="cv-job-title">Desarrollador de Software &amp; Lógica de Sistemas</span>
             </div>
             <div>
-              <h3 class="cv-section-label">Perfil Profesional</h3>
-              <p class="cv-profile-text">Desarrollador generalista enfocado en aplicaciones web interactivas y simulación. Cuento con una sólida base lógica en automatización eléctrica y más de 4 años de experiencia en desarrollo web y despliegues serverless (Firebase, GCP). Comprometido con la seguridad, el alto rendimiento y la entrega de código de excelente calidad.</p>
+              <h3 class="cv-section-label" data-translate="cv-profile-title">Perfil Profesional</h3>
+              <p class="cv-profile-text" data-translate="cv-profile-desc">Desarrollador generalista enfocado en aplicaciones web interactivas y simulación. Cuento con una sólida base lógica en automatización eléctrica y más de 4 años de experiencia en desarrollo web y despliegues serverless (Firebase, GCP). Comprometido con la seguridad, el alto rendimiento y la entrega de código de excelente calidad.</p>
             </div>
             <div>
-              <h3 class="cv-section-label">Experiencia Laboral</h3>
+              <h3 class="cv-section-label" data-translate="cv-exp-title">Experiencia Laboral</h3>
               <div class="cv-exp-list">
                 <div class="cv-exp-item">
-                  <div class="cv-exp-header"><span class="cv-exp-role">Desarrollador Web Freelance</span><span class="cv-exp-date">2020 — 2024</span></div>
-                  <div class="cv-exp-company">Desarrollo de Software y Gestión Operativa</div>
+                  <div class="cv-exp-header"><span class="cv-exp-role" data-translate="cv-exp-freelance-role">Desarrollador Web Freelance</span><span class="cv-exp-date" data-translate="cv-exp-freelance-date">2020 — 2024</span></div>
+                  <div class="cv-exp-company" data-translate="cv-exp-freelance-company">Desarrollo de Software y Gestión Operativa</div>
                   <ul class="cv-exp-bullets">
-                    <li>Desarrollo de escritorios virtuales interactivos y simulaciones web en tiempo real.</li>
-                    <li>Integración de bases de datos y servicios serverless con Firebase y Google Cloud.</li>
-                    <li>Gestión completa de proyectos desde los requisitos técnicos hasta el despliegue final.</li>
+                    <li data-translate="cv-exp-freelance-bullet1">Desarrollo de escritorios virtuales interactivos y simulaciones web en tiempo real.</li>
+                    <li data-translate="cv-exp-freelance-bullet2">Integración de bases de datos y servicios serverless con Firebase y Google Cloud.</li>
+                    <li data-translate="cv-exp-freelance-bullet3">Gestión completa de proyectos desde los requisitos técnicos hasta el despliegue final.</li>
                   </ul>
                 </div>
                 <div class="cv-exp-item">
-                  <div class="cv-exp-header"><span class="cv-exp-role">Técnico de Automatización y Electricidad (Prácticas)</span><span class="cv-exp-date">2026 (1 mes)</span></div>
-                  <div class="cv-exp-company">Iluminación Mi Casa S.L., Huesca</div>
+                  <div class="cv-exp-header"><span class="cv-exp-role" data-translate="cv-exp-intern-role">Técnico de Automatización y Electricidad (Prácticas)</span><span class="cv-exp-date" data-translate="cv-exp-intern-date">2026 (1 mes)</span></div>
+                  <div class="cv-exp-company" data-translate="cv-exp-intern-company">Iluminación Mi Casa S.L., Huesca</div>
                   <ul class="cv-exp-bullets">
-                    <li>Diagnóstico y reparación de lógica de control y sistemas industriales cableados.</li>
-                    <li>Resolución analítica de fallos lógicos en infraestructuras físicas de automatismos.</li>
-                    <li>Soporte técnico directo al cliente y mantenimiento correctivo de instalaciones.</li>
+                    <li data-translate="cv-exp-intern-bullet1">Diagnóstico y reparación de lógica de control y sistemas industriales cableados.</li>
+                    <li data-translate="cv-exp-intern-bullet2">Resolución analítica de fallos lógicos en infraestructuras físicas de automatismos.</li>
+                    <li data-translate="cv-exp-intern-bullet3">Soporte técnico directo al cliente y mantenimiento correctivo de instalaciones.</li>
                   </ul>
                 </div>
               </div>
@@ -470,15 +570,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Floating Version Badge -->
-    <div class="version-badge-container">
-      <button class="version-badge" id="version-badge-btn">
-        <span class="pulse-led green"></span>
-        <span class="version-text">v1.0.5</span>
-        <span class="sync-text" style="display: none;">— Sincronizado con GitHub</span>
-      </button>
     </div>
 
     <script type="module" src="/main.js"></script>
